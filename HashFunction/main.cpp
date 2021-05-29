@@ -15,7 +15,7 @@ int main ()
     cout << "Размер хэша: " << hash.DigestSize() << endl;
     cout << "Размер блока: " << hash.BlockSize() << endl;
     fstream file;
-    string path = "/home/riper/Загрузки/pract.odt";
+    string path = "/home/riper/Загрузки/log.txt";
     file.open(path);
     if(!file.is_open()) {
         cout << "Файл не открыт" << endl;
