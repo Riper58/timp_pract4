@@ -9,35 +9,30 @@
 using namespace std;
 int main ()
 {
-
-    CryptoPP::SHA384 hash; // создание хэш-объекта
-
-    cout <<"Name: " << hash.AlgorithmName() << endl; // Имя алгоритма
-    cout << "Diget size:" << hash.DigestSize() << endl; //размер хэша
-    cout << "Block size:" << hash.BlockSize() << endl; // размер внутреннего Блока
+    CryptoPP::SHA1 hash;
+    string one_str, file_text;
+    cout <<"Имя: " << hash.AlgorithmName() << endl;
+    cout << "Размер хэша: " << hash.DigestSize() << endl;
+    cout << "Размер блока: " << hash.BlockSize() << endl;
     fstream file;
-    string path = "/home/riper/hash.txt"; // Путь до файла
-    string str_message, file_contents;
+    string path = "/home/riper/Загрузки/pract.odt";
     file.open(path);
     if(!file.is_open()) {
-        cout << "Ошибка: файл не открыт" << endl;
+        cout << "Файл не открыт" << endl;
         return 1;
     }
     while(true) {
-        getline(file,str_message);
-        if (file.fail()) //сразу после чтения поток проверяется на наличие
+        getline(file,one_str);
+        if (file.fail())
             break;
-        file_contents += str_message;
+        file_text += one_str;
     }
-    cout << "File_contents: " << file_contents << endl; // содержимое файла
-
+    cout << "Содержимое файла: " << file_text << endl;
     vector<byte> digest (hash.DigestSize());
-
-    hash.Update(reinterpret_cast<const byte*>(file_contents.data()),file_contents.size()); // формируем хэш
-    hash.Final(digest.data()); // получаем хэш
-
-    cout << "Digest HEX format: ";
-    CryptoPP::StringSource(digest.data(),digest.size(),true, new  CryptoPP::HexEncoder(new  CryptoPP::FileSink(cout))); // выводим хэш в формате "hex"
+    hash.Update(reinterpret_cast<const byte*>(file_text.data()),file_text.size());
+    hash.Final(digest.data());
+    cout << "Хэш: " << endl;
+    CryptoPP::StringSource(digest.data(),digest.size(),true, new  CryptoPP::HexEncoder(new  CryptoPP::FileSink(cout)));
     cout << endl;
     return 0;
 }
